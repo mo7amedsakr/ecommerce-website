@@ -25,5 +25,3 @@ export const Layout: FC<LayoutProps> = (props) => {
     </Container>
   );
 };
-
-console.log();

@@ -7,7 +7,7 @@ export const Cards = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
   grid-auto-flow: row;
-  @media ${(props) => props.theme.mediaQueries.tablet} {
+  @media ${(props) => props.theme.mediaQueries.mobile} {
     grid-template-columns: repeat(2, 1fr);
   }
 `;

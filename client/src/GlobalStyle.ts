@@ -24,7 +24,7 @@ export const GlobalStyle = createGlobalStyle`
       `${props.theme.fontFamliy.main}, ${props.theme.fontFamliy.fallBack}`};
   }
 
-  button,input{
+  button,input,textarea{
     border: none;
     background-color: transparent;
     color: inherit;

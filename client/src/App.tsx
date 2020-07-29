@@ -6,6 +6,7 @@ import { GlobalStyle } from './GlobalStyle';
 import { theme } from './theme';
 import { Home } from './containers/Home/Home';
 import { Product } from './containers/Product/Product';
+import { Cart } from './containers/Cart/Cart';
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path="/products/:slug">
             <Product />
           </Route>
-          <Route path="/cart"></Route>
+          <Route path="/cart">
+            <Cart />
+          </Route>
         </Switch>
       </Layout>
     </ThemeProvider>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useNumberFormat } from '../../hooks/useNumberFormat';
@@ -8,6 +8,11 @@ import {
   Img,
   Name,
   Price,
+  CartCardContainer,
+  CartDetails,
+  CartProduct,
+  CartInfo,
+  InfoItem,
 } from './CardStyles';
 
 export interface ProductCardProps {
@@ -21,6 +26,16 @@ export interface CollectionCardProps {
   backgroundImage: string;
   label: string;
   url: string;
+}
+
+export interface CartCardProps {
+  img: string;
+  name: string;
+  color: string;
+  size: string;
+  price: number;
+  quantity: number;
+  maxQuantity: number;
 }
 
 const Product: FC<ProductCardProps> = (props) => {
@@ -47,7 +62,60 @@ const Collection: FC<CollectionCardProps> = (props) => {
   );
 };
 
+const Cart: FC<CartCardProps> = (props) => {
+  const [total, setTotal] = useState(props.quantity * props.price);
+
+  const quantityChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (+e.target.value < 1 && e.target.value !== '') {
+      e.target.value = '1';
+    } else if (+e.target.value > props.maxQuantity) {
+      e.target.value = props.maxQuantity.toString();
+    }
+    setTotal(+e.target.value * props.price);
+  };
+
+  return (
+    <CartCardContainer>
+      <CartProduct>
+        <Img>
+          <img src={props.img} alt="" />
+        </Img>
+        <CartDetails>
+          <Name>{props.name}</Name>
+          <span>
+            {props.color} / {props.size}
+          </span>
+          <button>Remove</button>
+        </CartDetails>
+      </CartProduct>
+      <CartInfo>
+        <InfoItem>
+          <span>Price</span>
+          <span>{useNumberFormat(props.price)}</span>
+        </InfoItem>
+        <InfoItem>
+          <span>Quantity</span>
+
+          <input
+            type="number"
+            min="1"
+            max={props.maxQuantity}
+            defaultValue={props.quantity}
+            onChange={quantityChangeHandler}
+          />
+        </InfoItem>
+        <InfoItem>
+          <span>Total</span>
+
+          <span>{useNumberFormat(total)}</span>
+        </InfoItem>
+      </CartInfo>
+    </CartCardContainer>
+  );
+};
+
 export const Card = {
   Product,
   Collection,
+  Cart,
 };

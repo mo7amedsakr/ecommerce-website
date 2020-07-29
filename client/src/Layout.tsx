@@ -14,7 +14,7 @@ export const Layout: FC<LayoutProps> = (props) => {
   const isMobile = useMediaQuery(theme.mediaQueries.mobile);
 
   return (
-    <Container fixed>
+    <Container>
       <Tobbar />
       {isMobile ? <NavMenu /> : null}
       <Grid>

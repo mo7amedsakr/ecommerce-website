@@ -58,7 +58,7 @@ export const Product: FC<ProductProps> = (props) => {
       </Container>
       <Recommendation label="Lorem ipsum dolor sit amet.">
         {new Array(4).fill(0).map((_, i) => (
-          <Card
+          <Card.Product
             key={i}
             url={`/products/slug`}
             img={photo}

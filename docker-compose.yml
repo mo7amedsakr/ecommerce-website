@@ -13,3 +13,16 @@ services:
       - CHOKIDAR_USEPOLLING=true
     ports:
       - '3000:3000'
+    ############################################
+  server:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - '4000:4000'

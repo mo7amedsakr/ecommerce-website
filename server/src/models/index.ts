@@ -2,7 +2,7 @@ import { pool } from '../database';
 import { createUserTable } from './userModel';
 
 export const initDB = async () => {
-  // pool.query('DROP SCHEMA ecommerce').then((val) => {
+  // pool.query('DROP TABLE ecommerce.user').then((val) => {
   //   console.log(val);
   // });
   try {

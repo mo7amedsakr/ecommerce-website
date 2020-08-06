@@ -6,13 +6,11 @@ import { AppError } from '../utils/appError';
 import { isEmail } from '../utils/isEmail';
 import { CustomRequest, ISingup, ILogin } from './interfaces';
 import {
-  queryUser,
   insertUser,
-  updateUser,
   findUser,
   hashPassword,
   correctPassword,
-  IUserTable,
+  filterUserQuery,
 } from '../models/userModel';
 
 export const protect: RequestHandler = catchAsync(
@@ -43,6 +41,17 @@ export const protect: RequestHandler = catchAsync(
     next();
   }
 );
+
+export const restrictToAdmin: RequestHandler = (
+  req: CustomRequest,
+  res,
+  next
+) => {
+  if (req.user!.role !== 'admin') {
+    return next(new AppError("You don't have permission.", 401));
+  }
+  next();
+};
 
 const signToken = (id: string) => {
   return signJWT({ id }, process.env.JWT_SECRET, {
@@ -89,12 +98,10 @@ export const signup: RequestHandler = catchAsync(
 
     const token = createToken(req, res, newUser.rows[0].id);
 
-    console.log(token);
-
     res.status(201).json({
       status: 'success',
       token,
-      user: { name: newUser.rows[0].name, email: newUser.rows[0].email },
+      data: filterUserQuery(newUser.rows[0]),
     });
   }
 );
@@ -106,6 +113,8 @@ export const login: RequestHandler = catchAsync(
     }
 
     const user = await findUser('email', req.body.email);
+
+    console.log(user.rows);
 
     if (
       user.rowCount < 1 ||
@@ -119,7 +128,7 @@ export const login: RequestHandler = catchAsync(
     res.status(200).json({
       status: 'success',
       token,
-      user: { name: user.rows[0].name, email: user.rows[0].email },
+      data: filterUserQuery(user.rows[0]),
     });
   }
 );

@@ -9,6 +9,7 @@ import cors from 'cors';
 const xss = require('xss-clean');
 import { globalErrorHandler } from './controllers/errorController';
 import usersRouter from './routes/usersRouter';
+import productsRouter from './routes/productsRouter';
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use(compression());
 // });
 
 app.use('/api/v1/users/', usersRouter);
+app.use('/api/v1/products/', productsRouter);
 
 app.use(globalErrorHandler);
 

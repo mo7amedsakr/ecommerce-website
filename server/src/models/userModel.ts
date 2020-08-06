@@ -13,6 +13,16 @@ const userTable = `
   )
 `;
 
+export const userQueries = {
+  selectAll: 'SELECT * FROM ecommerce.user',
+
+  insert:
+    'INSERT INTO ecommerce.user(name, email, password) VALUES($1,$2,$3) RETURNING *',
+
+  selectOne: (column: string) =>
+    `SELECT * FROM ecommerce.user WHERE ${column} = $1`,
+};
+
 export interface IUserTable {
   id: string;
   name: string;
@@ -28,15 +38,10 @@ export const queryUser = (query: string, params?: any[]) =>
   pool.query<IUserTable>(query, params);
 
 export const findUser = (column: string, value: string) =>
-  pool.query<IUserTable>(`SELECT * FROM ecommerce.user WHERE ${column} = $1`, [
-    value,
-  ]);
+  pool.query<IUserTable>(userQueries.selectOne(column), [value]);
 
 export const insertUser = (name: string, email: string, password: string) =>
-  pool.query<IUserTable>(
-    'INSERT INTO ecommerce.user(name, email, password) VALUES($1,$2,$3) RETURNING *',
-    [name, email, password]
-  );
+  pool.query<IUserTable>(userQueries.insert, [name, email, password]);
 
 export const updateUser = () => pool.query('', []);
 

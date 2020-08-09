@@ -67,8 +67,6 @@ export const createProduct: RequestHandler = catchAsync(
       collection,
     } = req.body;
 
-    console.log(req.body);
-
     const newProduct = await insertProduct(
       name,
       sizes,

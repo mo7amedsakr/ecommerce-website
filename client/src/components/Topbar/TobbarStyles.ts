@@ -15,9 +15,13 @@ export const Container = styled.div`
 export const Top = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   border-bottom: ${(props) => props.theme.border};
   width: 100%;
+  & > :nth-child(2) {
+    margin-left: auto;
+    margin-right: 2rem;
+  }
 `;
 
 export const Link = styled(RouterLink)`

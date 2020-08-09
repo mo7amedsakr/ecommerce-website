@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Container, Top, Left, Link, Right, Bottom } from './FooterStyle';
-import { Input } from '../Input/Input';
+import { InputForm } from '../Input/Input';
 
 export interface FooterProps {}
 
@@ -29,7 +29,7 @@ export const Footer: FC<FooterProps> = (props) => {
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus,
             error.
           </p>
-          <Input type="email" placeholder="your email" label="subscribe" />
+          <InputForm type="email" placeholder="your email" label="subscribe" />
         </Right>
       </Top>
       <Bottom>

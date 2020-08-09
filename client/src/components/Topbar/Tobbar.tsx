@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { RiShoppingCartLine } from 'react-icons/ri';
+import { FiLogIn } from 'react-icons/fi';
 import { Container, Top, Link, Logo } from './TobbarStyles';
 import { Search } from '../Searchbar/Search';
 
@@ -16,6 +17,12 @@ export const Tobbar: FC<TobbarProps> = (props) => {
             <RiShoppingCartLine />
           </i>
           <span>Cart ({items})</span>
+        </Link>
+        <Link to="/login">
+          <i>
+            <FiLogIn />
+          </i>
+          <span>Login</span>
         </Link>
       </Top>
       <Logo to="/">e-commerce.</Logo>

@@ -7,13 +7,21 @@ import { theme } from './theme';
 import { Home } from './containers/Home/Home';
 import { Product } from './containers/Product/Product';
 import { Cart } from './containers/Cart/Cart';
+import { Auth } from './containers/Auth/Auth';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Layout>
-        <Switch>
+      <Switch>
+        <Route path="/login">
+          <Auth.Login />
+        </Route>
+        <Route path="/signup">
+          <Auth.Signup />
+        </Route>
+
+        <Layout>
           <Route exact path="/">
             <Home />
           </Route>
@@ -23,8 +31,8 @@ function App() {
           <Route path="/cart">
             <Cart />
           </Route>
-        </Switch>
-      </Layout>
+        </Layout>
+      </Switch>
     </ThemeProvider>
   );
 }

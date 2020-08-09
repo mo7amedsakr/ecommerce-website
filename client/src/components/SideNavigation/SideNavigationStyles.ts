@@ -12,7 +12,7 @@ export const UL = styled.ul`
   display: flex;
   flex-direction: column;
   & > *:not(:last-child) {
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
   }
   @media ${(props) => props.theme.mediaQueries.mobile} {
     align-items: center;
@@ -22,7 +22,7 @@ export const UL = styled.ul`
 export const LI = styled.li`
   text-transform: capitalize;
   border-bottom: ${(props) => props.theme.border};
-  padding-bottom: 1rem;
+  padding: 1.5rem 0;
   @media ${(props) => props.theme.mediaQueries.mobile} {
     border-bottom: none;
   }

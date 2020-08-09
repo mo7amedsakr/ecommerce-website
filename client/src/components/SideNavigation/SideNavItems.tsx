@@ -8,14 +8,9 @@ export interface SideNavItemsProps {}
 export const SideNavItems: FC<SideNavItemsProps> = (props) => {
   const items = [
     { to: 'accessories', label: 'Accessories' },
-    { to: 'denim', label: 'Denim' },
     { to: 'footwear', label: 'Footwear' },
-    { to: 'jeans', label: 'Jeans' },
-    { to: 'outerwear', label: 'Outerwear' },
     { to: 'pants', label: 'Pants' },
-    { to: 'shirts', label: 'Shirts' },
     { to: 'tshirts', label: 'T-Shirts' },
-    { to: 'shorts', label: 'Shorts' },
   ];
 
   const social = [

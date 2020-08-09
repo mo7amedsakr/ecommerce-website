@@ -64,7 +64,10 @@ export const createProduct: RequestHandler = catchAsync(
       price,
       quantity,
       description,
+      collection,
     } = req.body;
+
+    console.log(req.body);
 
     const newProduct = await insertProduct(
       name,
@@ -73,7 +76,8 @@ export const createProduct: RequestHandler = catchAsync(
       images,
       price,
       quantity,
-      description
+      description,
+      collection
     );
 
     res.status(201).json({

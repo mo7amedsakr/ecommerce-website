@@ -1,4 +1,5 @@
-const AppError = require('../utils/appError');
+import { AppError } from '../utils/appError';
+import { Request, Response, NextFunction } from 'express';
 
 const sendErrorDev = (err: any, req: any, res: any) => {
   res.status(err.statusCode).json({
@@ -23,10 +24,10 @@ const sendErrorProd = (err: any, req: any, res: any) => {
 };
 
 export const globalErrorHandler = (
-  err: any,
-  req: any,
-  res: any,
-  next: Function
+  err: AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';

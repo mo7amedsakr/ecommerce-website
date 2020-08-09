@@ -4,7 +4,7 @@ import { pool } from '../database';
 
 const userTable = `
   CREATE TABLE IF NOT EXISTS ecommerce.user (
-    id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,

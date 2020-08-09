@@ -12,7 +12,13 @@ import {
   updateUser,
 } from '../controllers/usersController';
 
+import cartsRouter from './cartsRouter';
+import ordersRouter from './ordersRouter';
+
 const router = Router();
+
+router.use('/carts', cartsRouter);
+router.use('/orders', ordersRouter);
 
 router.post('/signup', signup);
 router.post('/login', login);

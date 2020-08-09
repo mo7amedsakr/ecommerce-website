@@ -114,8 +114,6 @@ export const login: RequestHandler = catchAsync(
 
     const user = await findUser('email', req.body.email);
 
-    console.log(user.rows);
-
     if (
       user.rowCount < 1 ||
       !(await correctPassword(req.body.password, user.rows[0].password))

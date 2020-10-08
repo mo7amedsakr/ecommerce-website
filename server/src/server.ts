@@ -1,4 +1,5 @@
-import path from 'path';
+import 'reflect-metadata';
+import { createConnection, getRepository } from 'typeorm';
 import dotenv from 'dotenv';
 
 process.on('uncaughtException', (err: any) => {
@@ -8,41 +9,47 @@ process.on('uncaughtException', (err: any) => {
 });
 
 dotenv.config({ path: './config.env' });
-import { v2 as cloudinary } from 'cloudinary';
+
 import app from './app';
-import { initDB } from './models/index';
 
-import { pool } from './database';
-
-pool.on('error', () => console.log('LOST DATABASE CONNECTION'));
-
-initDB();
-
-// console.log(path.join(__dirname, '../data', 'SGT-Beanie_Navy_01_2048x.jpg'));
-
-// cloudinary.uploader.upload(
-//   path.join(__dirname, '../data', 'SGT-Beanie_Navy_01_2048x.jpg'),
-//   function (error, result) {
-//     console.log(result, error);
-//   }
-// );
-
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-  console.log(`App running on http://127.0.0.1:${port}`);
-});
-
-process.on('unhandledRejection', (err: any) => {
-  console.log('UNHANDLER REJECTION! SHUTTING DOWN......');
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
+const main = async () => {
+  const connection = await createConnection({
+    type: 'postgres',
+    url: process.env.DATABASE,
+    // synchronize: true,
+    logging: false,
+    entities: ['./dist/entity/*.js'],
+    migrations: ['./dist/migration/*.js'],
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
-});
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM RECEIVED. Shutting down gracefully');
-  server.close(() => {
-    console.log('Process terminated!');
+  console.log('DATABASE CONNECTED!!');
+
+  await connection.runMigrations();
+
+  console.log('MIGRATIONS DONE!!');
+
+  const port = process.env.PORT || 3000;
+  const server = app.listen(port, () => {
+    console.log(`App running on http://127.0.0.1:${port}`);
   });
-});
+
+  process.on('unhandledRejection', (err: any) => {
+    console.log('UNHANDLER REJECTION! SHUTTING DOWN......');
+    console.log(err.name, err.message);
+    server.close(() => {
+      process.exit(1);
+    });
+  });
+
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM RECEIVED. Shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated!');
+    });
+  });
+};
+
+main().catch(console.error);

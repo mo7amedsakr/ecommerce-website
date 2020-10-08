@@ -1,37 +1,29 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { Container, Cards } from './HomeStyles';
 import { Card } from '../../components/Card/Card';
 import { Recommendation } from '../../components/Recommendation/Recommendation';
+import { ProductsContext } from '../../context/Products';
+import { Products } from '../../components/Products/Products';
 
-import photo from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
+import Accessories from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
+import Footwear from '../../assets/Boot_03_01_2048x2048.jpg';
+import TShirts from '../../assets/SGT-1101BC__Navy_01_2048x2048.jpg';
+import Pants from '../../assets/SGT-1171-Olive_Front_S_2048x2048.jpg';
 
 export interface HomeProps {}
 
 export const Home: FC<HomeProps> = (props) => {
   const collections = [
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
-    { img: photo, label: 'Accessories', url: '/' },
+    { img: Accessories, label: 'Accessories', url: '/accessories' },
+    { img: Footwear, label: 'Footwear', url: '/footwear' },
+    { img: TShirts, label: 'T-Shirts', url: '/tshirts' },
+    { img: Pants, label: 'Pants', url: '/pants' },
   ];
+
   return (
     <>
       <Container>
-        <Cards>
-          {new Array(10).fill(0).map((_, i) => (
-            <Card.Product
-              key={i}
-              url={`/products/slug`}
-              img={photo}
-              name="Lorem, ipsum dolor."
-              price={1555}
-            />
-          ))}
-        </Cards>
+        <Products />
       </Container>
       <Recommendation label="Lorem ipsum dolor sit amet.">
         {collections.map((el, i) => (

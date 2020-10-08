@@ -24,7 +24,8 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.get('/getMe', protect, getMe, getUser);
 
-router.get('/', protect, restrictToAdmin, getAllUsers);
+// protect, restrictToAdmin,
+router.get('/', getAllUsers);
 
 router
   .route('/:id')

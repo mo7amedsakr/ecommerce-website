@@ -19,7 +19,7 @@ app.enable('trust proxy');
 
 // Implement CORS
 if (process.env.NODE_ENV === 'development') {
-  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+  app.use(cors({ origin: 'https://localhost:3000', credentials: true }));
 } else {
   app.use(cors({ origin: 'URL', credentials: true }));
 }

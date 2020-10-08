@@ -1,17 +1,24 @@
 import { promisify } from 'util';
+import bcrypt from 'bcryptjs';
 import { RequestHandler, Request, Response } from 'express';
 import { sign as signJWT, verify as verifyJWT } from 'jsonwebtoken';
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/appError';
 import { isEmail } from '../utils/isEmail';
 import { CustomRequest, ISingup, ILogin } from './interfaces';
-import {
-  insertUser,
-  findUser,
-  hashPassword,
-  correctPassword,
-  filterUserQuery,
-} from '../models/userModel';
+import { getRepository } from 'typeorm';
+import { User } from '../entity/User';
+
+export const hashPassword = async (password: string) => {
+  return await bcrypt.hash(password, 12);
+};
+
+export const correctPassword = async (
+  candidatePassword: string,
+  userPassword: string
+) => {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 export const protect: RequestHandler = catchAsync(
   async (req: CustomRequest, res, next) => {
@@ -30,13 +37,13 @@ export const protect: RequestHandler = catchAsync(
       process.env.JWT_SECRET
     );
 
-    const currentUser = await findUser('id', decoded.id);
+    const currentUser = await getRepository(User).findOne({ id: decoded.id });
 
-    if (currentUser.rowCount < 1) {
+    if (!currentUser) {
       return next(new AppError('User No longer exists', 401));
     }
 
-    req.user = currentUser.rows[0];
+    req.user = currentUser;
 
     next();
   }
@@ -67,7 +74,6 @@ const createToken = (req: Request, res: Response, userID: string) => {
       Date.now() + +process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    sameSite: 'none',
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
@@ -90,18 +96,21 @@ export const signup: RequestHandler = catchAsync(
       return next(new AppError('Invalid email address.', 400));
     }
 
-    const newUser = await insertUser(
-      req.body.name,
-      req.body.email.toLowerCase(),
-      await hashPassword(req.body.password)
-    );
+    const newUser = new User();
+    newUser.name = req.body.name;
+    newUser.email = req.body.email.toLowerCase();
+    newUser.password = await hashPassword(req.body.password);
 
-    const token = createToken(req, res, newUser.rows[0].id);
+    const user = await getRepository(User).save(newUser);
+
+    const token = createToken(req, res, user.id);
+
+    const { password, ..._user } = user;
 
     res.status(201).json({
       status: 'success',
       token,
-      data: filterUserQuery(newUser.rows[0]),
+      data: _user,
     });
   }
 );
@@ -112,21 +121,23 @@ export const login: RequestHandler = catchAsync(
       return next(new AppError('Incorrect email or password', 400));
     }
 
-    const user = await findUser('email', req.body.email);
+    const user = await getRepository(User).findOne(
+      { email: req.body.email },
+      { select: ['password', 'email', 'name'] }
+    );
 
-    if (
-      user.rowCount < 1 ||
-      !(await correctPassword(req.body.password, user.rows[0].password))
-    ) {
+    if (!user || !(await correctPassword(req.body.password, user.password))) {
       return next(new AppError('Incorrect email or password', 401));
     }
 
-    const token = createToken(req, res, user.rows[0].id);
+    const token = createToken(req, res, user.id);
+
+    const { password, ..._user } = user;
 
     res.status(200).json({
       status: 'success',
       token,
-      data: filterUserQuery(user.rows[0]),
+      data: _user,
     });
   }
 );

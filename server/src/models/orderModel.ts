@@ -1,6 +1,5 @@
 import { pool } from '../database';
-import { queryCart, cartQueries } from './cartModel';
-import { IProductTable } from './productModel';
+import { Product } from '../entity/Product';
 
 const orderTable = `
   CREATE TABLE IF NOT EXISTS ecommerce.order(
@@ -40,7 +39,7 @@ export interface IOrderItemTable {
 }
 
 interface OrderQuery {
-  name: IProductTable['name'];
+  name: Product['name'];
   image: string;
   quantity: IOrderItemTable['quantity'];
   size: IOrderItemTable['size'];
@@ -115,7 +114,7 @@ export const createNewOrder = async (userId: IOrderTable['user_id']) => {
       userId,
     ]);
 
-    await queryCart(cartQueries.deleteAll, [userId]);
+    // await queryCart(cartQueries.deleteAll, [userId]);
 
     /**/
     await client.query('COMMIT');

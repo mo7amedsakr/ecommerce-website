@@ -14,12 +14,6 @@ import { Recommendation } from '../../components/Recommendation/Recommendation';
 import { Card } from '../../components/Card/Card';
 import photo from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
 
-import photo1 from '../../assets/SGT-1161-Charcoal_Front_M_2048x2048.jpg';
-import photo2 from '../../assets/SGT-1161-Charcoal_Detail_3_2048x2048.jpg';
-import photo3 from '../../assets/SGT-1161-Charcoal_Detail_2_2048x2048.jpg';
-import photo4 from '../../assets/SGT-1161-Charcoal_Detail_1_2048x2048.jpg';
-import photo5 from '../../assets/SGT-1161-Charcoal_Back_2048x2048.jpg';
-
 export interface ProductProps {}
 
 export const Product: FC<ProductProps> = (props) => {
@@ -30,7 +24,7 @@ export const Product: FC<ProductProps> = (props) => {
     <>
       <Container>
         <Main>
-          <ImagesViewer images={[photo1, photo2, photo3, photo4, photo5]} />
+          {/* <ImagesViewer images={[photo1, photo2, photo3, photo4, photo5]} /> */}
           <Details>
             <h3>Lorem ipsum dolor sit.</h3>
             <h4>{useNumberFormat(1555)}</h4>

@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import { ErrorProvider } from './context/Error';
+import { ProductsProvider } from './context/Products';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ErrorProvider>
+      <ProductsProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ProductsProvider>
+    </ErrorProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

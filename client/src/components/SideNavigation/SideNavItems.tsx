@@ -24,11 +24,7 @@ export const SideNavItems: FC<SideNavItemsProps> = (props) => {
       <UL>
         <SideNavItem to="/" label="home" />
         {items.map((item, i) => (
-          <SideNavItem
-            key={i}
-            to={`/collections/${item.to}`}
-            label={item.label}
-          />
+          <SideNavItem key={i} to={item.to} label={item.label} />
         ))}
       </UL>
       <Socials>

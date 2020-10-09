@@ -1,13 +1,26 @@
-import React, { FC } from 'react';
-import { useNumberFormat } from '../../hooks/useNumberFormat';
+import React, { FC, useContext } from 'react';
+import { numberFormat } from '../../utils/numberFormat';
 import { Container, Products, Tabel, Footer, Actions } from './CartStyle';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
 import photo from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
+import { AuthContext } from '../../context/Auth';
 
 export interface CartProps {}
 
 export const Cart: FC<CartProps> = (props) => {
+  const { user, authLodaing } = useContext(AuthContext);
+
+  if (!user) {
+    return (
+      <Container>
+        <h1 style={{ textAlign: 'center' }}>
+          {authLodaing ? 'Loading...' : 'Please login first.'}
+        </h1>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Products>
@@ -38,7 +51,7 @@ export const Cart: FC<CartProps> = (props) => {
           <textarea></textarea>
         </div>
         <Actions>
-          <h3>Subtotal {useNumberFormat(1555)}</h3>
+          <h3>Subtotal {numberFormat(1555)}</h3>
           <span style={{ fontStyle: 'italic', textAlign: 'right' }}>
             Taxes and shipping calculated at checkout
           </span>

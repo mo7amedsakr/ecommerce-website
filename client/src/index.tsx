@@ -5,15 +5,18 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { ErrorProvider } from './context/Error';
 import { ProductsProvider } from './context/Products';
+import { AuthProvider } from './context/Auth';
 
 ReactDOM.render(
   <React.StrictMode>
     <ErrorProvider>
-      <ProductsProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ProductsProvider>
+      <AuthProvider>
+        <ProductsProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ProductsProvider>
+      </AuthProvider>
     </ErrorProvider>
   </React.StrictMode>,
   document.getElementById('root')

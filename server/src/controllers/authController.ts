@@ -123,7 +123,7 @@ export const login: RequestHandler = catchAsync(
 
     const user = await getRepository(User).findOne(
       { email: req.body.email },
-      { select: ['password', 'email', 'name'] }
+      { select: ['id', 'password', 'email', 'name'] }
     );
 
     if (!user || !(await correctPassword(req.body.password, user.password))) {
@@ -132,7 +132,7 @@ export const login: RequestHandler = catchAsync(
 
     const token = createToken(req, res, user.id);
 
-    const { password, ..._user } = user;
+    const { password, id, ..._user } = user;
 
     res.status(200).json({
       status: 'success',

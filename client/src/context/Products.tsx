@@ -8,7 +8,7 @@ import React, {
 import axios from '../axios';
 import { ErrorContext } from './Error';
 
-interface Products {
+interface Product {
   id: string;
   name: string;
   sizes: string[];
@@ -22,10 +22,12 @@ interface Products {
   collection: 'accessories' | 'footwear' | 'tshirts' | 'pants';
 }
 
-export const ProductsContext = createContext<{
-  products: { [key: string]: Array<Products> };
-  getProducts: (pathname: string) => void;
-}>({
+interface IProductsContext {
+  products: { [key: string]: Array<Product> };
+  getProducts: (pathname: string) => Promise<void>;
+}
+
+export const ProductsContext = createContext<IProductsContext>({
   products: {},
   getProducts: async (pathname: string) => {},
 });
@@ -33,9 +35,7 @@ export const ProductsContext = createContext<{
 export const ProductsProvider: FC = (props) => {
   const { setError } = useContext(ErrorContext);
 
-  const [products, setProducts] = useState<{ [key: string]: Array<Products> }>(
-    {}
-  );
+  const [products, setProducts] = useState<IProductsContext['products']>({});
 
   const getProducts = useCallback(
     async (pathname: string) => {

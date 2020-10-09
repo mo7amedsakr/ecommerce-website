@@ -11,7 +11,6 @@ export interface InputFormProps {
 
 export const Input = styled.input`
   padding: 1rem;
-  width: 100%;
   background-color: ${(props) => props.theme.colors.lightGray};
   &::placeholder {
     text-transform: capitalize;
@@ -21,7 +20,7 @@ export const Input = styled.input`
 export const InputForm: FC<InputFormProps> = (props) => {
   return (
     <form style={{ display: 'felx' }}>
-      <input type={props.type} placeholder={props.placeholder} />
+      <Input type={props.type} placeholder={props.placeholder} />
       <Button.Full type="submit">{props.label}</Button.Full>
     </form>
   );

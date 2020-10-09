@@ -6,32 +6,31 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
-  ManyToOne,
 } from 'typeorm';
 import { Product } from './Product';
 import { User } from './User';
 
-@Entity()
+@Entity({ name: 'cart' })
 @Unique(['user_id', 'product_id', 'size', 'color'])
 export class Cart {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @OneToOne(() => User, (user) => user.id)
   @Column({ nullable: false, name: 'user_id', type: 'uuid' })
-  user_id!: string;
+  user_id: string;
 
   @ManyToMany((type) => Product, (product) => product.id)
   @Column({ name: 'product_id', nullable: false, type: 'uuid' })
-  product_id!: string;
+  product_id: string;
 
   @Column({ type: 'int2', name: 'quantity', nullable: false })
   @Check(`"quantity" > 0`)
-  quantity!: number;
+  quantity: number;
 
   @Column({ type: 'text', name: 'size', nullable: false })
-  size!: string;
+  size: string;
 
   @Column({ type: 'text', name: 'color', nullable: false })
-  color!: string;
+  color: string;
 }

@@ -1,7 +1,7 @@
 import React, { FC, ChangeEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useNumberFormat } from '../../hooks/useNumberFormat';
+import { numberFormat } from '../../utils/numberFormat';
 import {
   ProductContainer,
   CollectionContainer,
@@ -46,7 +46,7 @@ const Product: FC<ProductCardProps> = (props) => {
           <img src={props.img} alt="" />
         </Img>
         <Name>{props.name}</Name>
-        <Price>{useNumberFormat(props.price)}</Price>
+        <Price>{numberFormat(props.price)}</Price>
       </ProductContainer>
     </div>
   );
@@ -91,7 +91,7 @@ const Cart: FC<CartCardProps> = (props) => {
       <CartInfo>
         <InfoItem>
           <span>Price</span>
-          <span>{useNumberFormat(props.price)}</span>
+          <span>{numberFormat(props.price)}</span>
         </InfoItem>
         <InfoItem>
           <span>Quantity</span>
@@ -107,7 +107,7 @@ const Cart: FC<CartCardProps> = (props) => {
         <InfoItem>
           <span>Total</span>
 
-          <span>{useNumberFormat(total)}</span>
+          <span>{numberFormat(total)}</span>
         </InfoItem>
       </CartInfo>
     </CartCardContainer>

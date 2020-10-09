@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/appError';
 import { CustomRequest, ICreateCartItem, IUpdateCartItem } from './interfaces';
-import { createQueryBuilder, getConnection, getRepository } from 'typeorm';
+import { createQueryBuilder, getRepository } from 'typeorm';
 import { Cart } from '../entity/Cart';
 import { Product } from '../entity/Product';
 
@@ -16,15 +16,20 @@ export const createCartItem: RequestHandler = catchAsync(
 
     const { productId, color, size, quantity } = req.body;
 
-    const newItem = new Cart();
-
-    newItem.user_id = req.user!.id;
-    newItem.product_id = productId;
-    newItem.color = color;
-    newItem.size = size;
-    newItem.quantity = quantity ?? 1;
-
-    const item = await getRepository(Cart).save(newItem);
+    const item = await createQueryBuilder(Cart, 'cart')
+      .insert()
+      .values({
+        user_id: req.user!.id,
+        product_id: productId,
+        quantity: quantity ?? 1,
+        size,
+        color,
+      })
+      .onConflict(
+        `("user_id", "product_id", "size", "color") DO UPDATE SET quantity = cart.quantity + 1`
+      )
+      .returning('*')
+      .execute();
 
     if (!item) {
       return next(new AppError('Somthing went worng.', 401));
@@ -32,7 +37,7 @@ export const createCartItem: RequestHandler = catchAsync(
 
     res.status(200).json({
       status: 'success',
-      data: item,
+      data: item.raw,
     });
   }
 );
@@ -48,6 +53,8 @@ export const deleteCartItem: RequestHandler = catchAsync(
 export const getCart: RequestHandler = catchAsync(
   async (req: CustomRequest, res, next) => {
     const cartItems = await createQueryBuilder(Cart, 'cart')
+      .select()
+      .where('cart.user_id = :userId', { userId: req.user!.id })
       .leftJoinAndSelect(Product, 'product', 'product.id = cart.product_id')
       .select([
         'cart.quantity as quantity',

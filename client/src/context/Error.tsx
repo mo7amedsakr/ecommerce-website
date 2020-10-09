@@ -6,10 +6,12 @@ import React, {
   SetStateAction,
 } from 'react';
 
-export const ErrorContext = createContext<{
+interface IErrorContext {
   error: string | null;
   setError: Dispatch<SetStateAction<string | null>>;
-}>({
+}
+
+export const ErrorContext = createContext<IErrorContext>({
   error: null,
   setError: () => {},
 });

@@ -19,9 +19,9 @@ app.enable('trust proxy');
 
 // Implement CORS
 if (process.env.NODE_ENV === 'development') {
-  app.use(cors({ origin: 'https://localhost:3000', credentials: true }));
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 } else {
-  app.use(cors({ origin: 'URL', credentials: true }));
+  app.use(cors({ credentials: true }));
 }
 
 app.options('*', cors());
@@ -60,8 +60,7 @@ app.use(xss());
 app.use(compression());
 
 // Test middleware
-// app.use((req: any, res, next) => {
-//   req.requestTime = new Date().toISOString();
+// app.use((req, res, next) => {
 //   next();
 // });
 

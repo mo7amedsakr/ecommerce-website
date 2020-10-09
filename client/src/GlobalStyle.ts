@@ -32,6 +32,11 @@ export const GlobalStyle = createGlobalStyle`
     font-family: inherit;
     font-size: inherit;
   }
+
+  button:disabled{
+    opacity:0.7;
+  }
+
   a{
     text-decoration:none;
     color: inherit; 

@@ -2,6 +2,8 @@ import {
   Check,
   Column,
   Entity,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -10,43 +12,44 @@ import {
 import { Product } from './Product';
 import { User } from './User';
 
-@Entity()
+@Entity({ name: 'order' })
 export class Order {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @ManyToMany(() => User, (user) => user.id)
   @Column({ type: 'uuid', nullable: false })
-  user_id!: string;
+  user_id: string;
 
   @Column({ type: 'numeric', precision: 10, scale: 2, nullable: false })
-  total!: string;
+  total: string;
 
   @Column({ type: 'timestamp', default: () => 'NOW()', nullable: false })
-  inserted_at!: Date;
+  inserted_at: Date;
 }
 
-@Entity()
+@Entity({ name: 'order_item' })
 @Unique(['order_id', 'product_id', 'quantity', 'size', 'color'])
 export class OrderItem {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
-  @ManyToOne(() => Order, (order) => order.id)
+  @ManyToOne((type) => Order, (order) => order.id)
   @Column({ type: 'uuid', nullable: false, name: 'order_id' })
-  order_id!: string;
+  @JoinColumn({ name: 'order_id' })
+  order_id: string;
 
-  @ManyToMany(() => Product, (product) => product.id)
+  @ManyToMany((type) => Product, (product) => product.id)
   @Column({ type: 'uuid', nullable: false, name: 'product_id' })
-  product_id!: string;
+  product_id: string;
 
   @Column({ type: 'int2', nullable: false, name: 'quantity' })
   @Check(`"quantity" > 0`)
-  quantity!: number;
+  quantity: number;
 
   @Column({ type: 'text', name: 'size', nullable: false })
-  size!: string;
+  size: string;
 
   @Column({ type: 'text', name: 'color', nullable: false })
-  color!: string;
+  color: string;
 }

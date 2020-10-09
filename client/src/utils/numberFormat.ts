@@ -1,4 +1,4 @@
-export const useNumberFormat = (
+export const numberFormat = (
   num: number,
   locales: string = 'en-US',
   currency: string = 'USD',

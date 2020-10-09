@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { createConnection, getRepository } from 'typeorm';
+import { createConnection } from 'typeorm';
 import dotenv from 'dotenv';
 
 process.on('uncaughtException', (err: any) => {
@@ -16,8 +16,7 @@ const main = async () => {
   const connection = await createConnection({
     type: 'postgres',
     url: process.env.DATABASE,
-    // synchronize: true,
-    logging: false,
+    logging: process.env.NODE_ENV === 'development',
     entities: ['./dist/entity/*.js'],
     migrations: ['./dist/migration/*.js'],
     ssl: {
@@ -27,9 +26,10 @@ const main = async () => {
 
   console.log('DATABASE CONNECTED!!');
 
-  await connection.runMigrations();
-
-  console.log('MIGRATIONS DONE!!');
+  if (process.env.NODE_ENV === 'development') {
+    await connection.runMigrations();
+    console.log('MIGRATIONS DONE!!');
+  }
 
   const port = process.env.PORT || 3000;
   const server = app.listen(port, () => {

@@ -7,5 +7,6 @@
 **.env.d.ts
 
 **/dev-data
+**/dev.ts
 
 **/ormconfig.json

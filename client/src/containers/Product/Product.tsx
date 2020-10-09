@@ -1,5 +1,5 @@
 import React, { FC, useRef } from 'react';
-import { useNumberFormat } from '../../hooks/useNumberFormat';
+import { numberFormat } from '../../utils/numberFormat';
 import {
   Container,
   Main,
@@ -27,7 +27,7 @@ export const Product: FC<ProductProps> = (props) => {
           {/* <ImagesViewer images={[photo1, photo2, photo3, photo4, photo5]} /> */}
           <Details>
             <h3>Lorem ipsum dolor sit.</h3>
-            <h4>{useNumberFormat(1555)}</h4>
+            <h4>{numberFormat(1555)}</h4>
 
             <Selectors>
               <Select label="color" options={['one']} ref={colorRef} />

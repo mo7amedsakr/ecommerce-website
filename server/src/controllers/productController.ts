@@ -8,13 +8,19 @@ import { Product } from '../entity/Product';
 
 export const getAllProducts: RequestHandler = catchAsync(
   async (req, res, next) => {
-    const { collection, price } = req.query;
+    const { collection, price, page: _page, limit: _limit } = req.query;
+
+    const page = _page ? +_page : 1;
+    const limit = _limit ? +_limit : 10;
+    const skip = (page - 1) * limit;
 
     const products = await getRepository(Product).find({
       where: { ...(collection ? { collection } : {}) },
       order: {
         price: price === 'low' ? 'ASC' : price === 'high' ? 'DESC' : undefined,
       },
+      skip,
+      take: limit,
     });
 
     res.status(200).json({

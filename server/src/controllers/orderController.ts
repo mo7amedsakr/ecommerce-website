@@ -7,7 +7,7 @@ import { Cart } from '../entity/Cart';
 import { Product } from '../entity/Product';
 
 export const createOrder: RequestHandler = catchAsync(
-  async (req: CustomRequest, res, next) => {
+  async (req, res, next) => {
     // insert order sql
 
     // INSERT INTO
@@ -46,7 +46,7 @@ export const createOrder: RequestHandler = catchAsync(
           FROM cart, product
           WHERE cart.user_id = $1 AND cart.product_id = product.id
         `,
-          [req.user!.id]
+          [req.user.id]
         )
       )[0].sum;
 
@@ -55,7 +55,7 @@ export const createOrder: RequestHandler = catchAsync(
         .useTransaction(true)
         .insert()
         .values({
-          user_id: req.user!.id,
+          user_id: req.user.id,
           total: total,
         })
         .execute();
@@ -68,14 +68,14 @@ export const createOrder: RequestHandler = catchAsync(
         WHERE cart.user_id = $2
         RETURNING *
         `,
-        [newOrder.identifiers[0].id, req.user!.id]
+        [newOrder.identifiers[0].id, req.user.id]
       );
 
       await queryRunner.manager
         .createQueryBuilder(Cart, 'cart')
         .useTransaction(true)
         .delete()
-        .where('cart.user_id = :userId', { userId: req.user!.id })
+        .where('cart.user_id = :userId', { userId: req.user.id })
         .execute();
 
       await queryRunner.commitTransaction();
@@ -93,8 +93,8 @@ export const createOrder: RequestHandler = catchAsync(
 );
 
 export const getAllOrders: RequestHandler = catchAsync(
-  async (req: CustomRequest, res, next) => {
-    const orders = await getRepository(Order).find({ user_id: req.user!.id });
+  async (req, res, next) => {
+    const orders = await getRepository(Order).find({ user_id: req.user.id });
 
     res.status(200).json({
       status: 'success',

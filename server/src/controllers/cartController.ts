@@ -19,7 +19,7 @@ export const createCartItem: RequestHandler = catchAsync(
     const item = await createQueryBuilder(Cart, 'cart')
       .insert()
       .values({
-        user_id: req.user!.id,
+        user_id: req.user.id,
         product_id: productId,
         quantity: quantity ?? 1,
         size,
@@ -50,34 +50,34 @@ export const deleteCartItem: RequestHandler = catchAsync(
   }
 );
 
-export const getCart: RequestHandler = catchAsync(
-  async (req: CustomRequest, res, next) => {
-    const cartItems = await createQueryBuilder(Cart, 'cart')
-      .select()
-      .where('cart.user_id = :userId', { userId: req.user!.id })
-      .leftJoinAndSelect(Product, 'product', 'product.id = cart.product_id')
-      .select([
-        'cart.quantity as quantity',
-        'cart.size as size',
-        'cart.color as color',
-        'product.name as name',
-        'product.price as price',
-        'product.images[1] as image',
-      ])
-      .execute();
+export const getCart: RequestHandler = catchAsync(async (req, res, next) => {
+  const cartItems = await createQueryBuilder(Cart, 'cart')
+    .select()
+    .where('cart.user_id = :userId', { userId: req.user.id })
+    .leftJoinAndSelect(Product, 'product', 'product.id = cart.product_id')
+    .select([
+      'cart.id as id',
+      'cart.quantity as quantity',
+      'cart.size as size',
+      'cart.color as color',
+      'product.name as name',
+      'product.price as price',
+      'product.images[1] as image',
+      'product.quantity as maxquantity',
+    ])
+    .execute();
 
-    let total = 0;
+  let total = 0;
 
-    cartItems.forEach((item: any) => {
-      total += item.quantity * +item.price;
-    });
+  cartItems.forEach((item: any) => {
+    total += item.quantity * +item.price;
+  });
 
-    res.status(200).json({
-      status: 'success',
-      data: { total: total, length: cartItems.length, items: cartItems },
-    });
-  }
-);
+  res.status(200).json({
+    status: 'success',
+    data: { total: total, length: cartItems.length, items: cartItems },
+  });
+});
 
 export const updateCartItem: RequestHandler = catchAsync(
   async (req: CustomRequest<IUpdateCartItem>, res, next) => {
@@ -92,7 +92,14 @@ export const updateCartItem: RequestHandler = catchAsync(
 
     res.status(200).json({
       status: 'success',
-      data: updatedItem,
     });
   }
 );
+
+export const deleteCart = catchAsync(async (req, res, next) => {
+  await getRepository(Cart).delete({
+    user_id: req.user.id,
+  });
+
+  res.status(204).json({ status: 'success' });
+});

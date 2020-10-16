@@ -13,7 +13,6 @@ export const getAllProducts: RequestHandler = catchAsync(
     const page = _page ? +_page : 1;
     const limit = _limit ? +_limit : 10;
     const skip = (page - 1) * limit;
-
     const products = await getRepository(Product).find({
       where: { ...(collection ? { collection } : {}) },
       order: {
@@ -39,7 +38,7 @@ export const getProduct: RequestHandler = catchAsync(async (req, res, next) => {
     return next(new AppError('No Document.', 404));
   }
 
-  res.status(303).json({
+  res.status(200).json({
     status: 'success',
     data: product,
   });

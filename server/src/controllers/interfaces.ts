@@ -5,7 +5,6 @@ import { Cart } from '../entity/Cart';
 
 export interface CustomRequest<T = Request['body']> extends Request {
   body: T;
-  user?: User;
 }
 
 export interface ISingup {

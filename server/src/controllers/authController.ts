@@ -20,41 +20,35 @@ export const correctPassword = async (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-export const protect: RequestHandler = catchAsync(
-  async (req: CustomRequest, res, next) => {
-    let token: string;
+export const protect: RequestHandler = catchAsync(async (req, res, next) => {
+  let token: string;
 
-    if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    } else {
-      return next(
-        new AppError('you are not logged in ! please log in first', 403)
-      );
-    }
-
-    const decoded: any = await promisify(verifyJWT)(
-      token,
-      process.env.JWT_SECRET
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  } else {
+    return next(
+      new AppError('you are not logged in ! please log in first', 403)
     );
-
-    const currentUser = await getRepository(User).findOne({ id: decoded.id });
-
-    if (!currentUser) {
-      return next(new AppError('User No longer exists', 401));
-    }
-
-    req.user = currentUser;
-
-    next();
   }
-);
 
-export const restrictToAdmin: RequestHandler = (
-  req: CustomRequest,
-  res,
-  next
-) => {
-  if (req.user!.role !== 'admin') {
+  const decoded: any = await promisify(verifyJWT)(
+    token,
+    process.env.JWT_SECRET
+  );
+
+  const currentUser = await getRepository(User).findOne({ id: decoded.id });
+
+  if (!currentUser) {
+    return next(new AppError('User No longer exists', 401));
+  }
+
+  req.user = currentUser;
+
+  next();
+});
+
+export const restrictToAdmin: RequestHandler = (req, res, next) => {
+  if (req.user.role !== 'admin') {
     return next(new AppError("You don't have permission.", 401));
   }
   next();

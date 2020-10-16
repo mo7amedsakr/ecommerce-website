@@ -1,10 +1,8 @@
-import React, { FC, useContext, useEffect } from 'react';
-import { Container, Cards } from './HomeStyles';
+import React, { FC } from 'react';
+import { Container } from './HomeStyles';
 import { Card } from '../../components/Card/Card';
 import { Recommendation } from '../../components/Recommendation/Recommendation';
-import { ProductsContext } from '../../context/Products';
 import { Products } from '../../components/Products/Products';
-
 import Accessories from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
 import Footwear from '../../assets/Boot_03_01_2048x2048.jpg';
 import TShirts from '../../assets/SGT-1101BC__Navy_01_2048x2048.jpg';
@@ -12,14 +10,14 @@ import Pants from '../../assets/SGT-1171-Olive_Front_S_2048x2048.jpg';
 
 export interface HomeProps {}
 
-export const Home: FC<HomeProps> = (props) => {
-  const collections = [
-    { img: Accessories, label: 'Accessories', url: '/accessories' },
-    { img: Footwear, label: 'Footwear', url: '/footwear' },
-    { img: TShirts, label: 'T-Shirts', url: '/tshirts' },
-    { img: Pants, label: 'Pants', url: '/pants' },
-  ];
+const collections = [
+  { img: Accessories, label: 'Accessories', url: '/accessories' },
+  { img: Footwear, label: 'Footwear', url: '/footwear' },
+  { img: TShirts, label: 'T-Shirts', url: '/tshirts' },
+  { img: Pants, label: 'Pants', url: '/pants' },
+];
 
+export const Home: FC<HomeProps> = (props) => {
   return (
     <>
       <Container>

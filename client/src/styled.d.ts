@@ -8,6 +8,8 @@ declare module 'styled-components' {
       lightGray: string;
       gray: string;
       darkGray: string;
+      backdrop: string;
+      alertError: string;
     };
 
     fontFamliy: { main: string; fallBack: string };

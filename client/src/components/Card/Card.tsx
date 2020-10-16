@@ -1,5 +1,6 @@
-import React, { FC, ChangeEvent, useState } from 'react';
+import React, { FC, ChangeEvent, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { CartContext, ICartItem } from '../../context/Cart';
 
 import { numberFormat } from '../../utils/numberFormat';
 import {
@@ -28,14 +29,8 @@ export interface CollectionCardProps {
   url: string;
 }
 
-export interface CartCardProps {
-  img: string;
-  name: string;
-  color: string;
-  size: string;
-  price: number;
-  quantity: number;
-  maxQuantity: number;
+export interface CartCardProps extends ICartItem {
+  index: number;
 }
 
 const Product: FC<ProductCardProps> = (props) => {
@@ -62,36 +57,49 @@ const Collection: FC<CollectionCardProps> = (props) => {
   );
 };
 
-const Cart: FC<CartCardProps> = (props) => {
-  const [total, setTotal] = useState(props.quantity * props.price);
+const Cart: FC<CartCardProps> = ({
+  id,
+  name,
+  image,
+  color,
+  maxquantity,
+  price,
+  quantity,
+  size,
+  index,
+}) => {
+  const total = quantity * +price;
+  const { removeFromCart, isLoading, updateCartItem } = useContext(CartContext);
 
   const quantityChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (+e.target.value < 1 && e.target.value !== '') {
       e.target.value = '1';
-    } else if (+e.target.value > props.maxQuantity) {
-      e.target.value = props.maxQuantity.toString();
+    } else if (+e.target.value > maxquantity) {
+      e.target.value = maxquantity.toString();
     }
-    setTotal(+e.target.value * props.price);
+    updateCartItem(id, index, { quantity: +e.target.value });
   };
 
   return (
     <CartCardContainer>
       <CartProduct>
         <Img>
-          <img src={props.img} alt="" />
+          <img src={image} alt="" />
         </Img>
         <CartDetails>
-          <Name>{props.name}</Name>
+          <Name>{name}</Name>
           <span>
-            {props.color} / {props.size}
+            {color} / {size}
           </span>
-          <button>Remove</button>
+          <button onClick={() => removeFromCart(id)} disabled={isLoading}>
+            Remove
+          </button>
         </CartDetails>
       </CartProduct>
       <CartInfo>
         <InfoItem>
           <span>Price</span>
-          <span>{numberFormat(props.price)}</span>
+          <span>{numberFormat(+price)}</span>
         </InfoItem>
         <InfoItem>
           <span>Quantity</span>
@@ -99,9 +107,10 @@ const Cart: FC<CartCardProps> = (props) => {
           <input
             type="number"
             min="1"
-            max={props.maxQuantity}
-            defaultValue={props.quantity}
+            max={maxquantity}
+            defaultValue={quantity}
             onChange={quantityChangeHandler}
+            disabled={isLoading}
           />
         </InfoItem>
         <InfoItem>

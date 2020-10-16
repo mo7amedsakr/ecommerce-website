@@ -1,5 +1,6 @@
 import React, {
   FC,
+  useEffect,
   useContext,
   useCallback,
   createContext,
@@ -54,17 +55,16 @@ export const AuthProvider: FC = (props) => {
   const toggleAuthModal = () => setShow((prev) => !prev);
 
   const auth = async (path: '/login' | '/signup', data: IData) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const res = await axios.post(`/users${path}`, data);
       const { name, email } = res.data.data;
       setUser({ name, email });
       toggleAuthModal();
-      setIsLoading(false);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
       setIsLoading(false);
-      console.log(error.response.data.message);
     }
   };
 
@@ -73,13 +73,16 @@ export const AuthProvider: FC = (props) => {
       const res = await axios.get('/users/getMe');
       const { name, email } = res.data.data;
       setUser({ name, email });
-      setIsLoading(false);
     } catch (error) {
-      // setError(error.response.data.message);
+      // console.log(error.response.data.message);
+    } finally {
       setIsLoading(false);
-      console.log(error.response.data.message);
     }
-  }, [setError]);
+  }, []);
+
+  useEffect(() => {
+    getMe();
+  }, [getMe]);
 
   return (
     <AuthContext.Provider

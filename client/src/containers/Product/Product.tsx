@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useContext, useEffect } from 'react';
 import { numberFormat } from '../../utils/numberFormat';
 import {
   Container,
@@ -10,47 +10,76 @@ import {
 import { ImagesViewer } from '../../components/ImagesViewer/ImagesViewer';
 import { Select } from '../../components/Select/Select';
 import { Button } from '../../components/Button/Button';
-import { Recommendation } from '../../components/Recommendation/Recommendation';
-import { Card } from '../../components/Card/Card';
-import photo from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
+// import { Recommendation } from '../../components/Recommendation/Recommendation';
+// import { Card } from '../../components/Card/Card';
+import { ProductsContext } from '../../context/Products';
+import { ErrorContext } from '../../context/Error';
+import { CartContext } from '../../context/Cart';
+import { useParams } from 'react-router-dom';
 
 export interface ProductProps {}
 
 export const Product: FC<ProductProps> = (props) => {
   const colorRef = useRef<HTMLSelectElement>(null);
   const sizeRef = useRef<HTMLSelectElement>(null);
+  const { slug } = useParams<{ slug: string }>();
+  const { getProduct, product, isLoading } = useContext(ProductsContext);
+  const { error } = useContext(ErrorContext);
+  const { addToCart, isLoading: cartLoading } = useContext(CartContext);
+
+  useEffect(() => {
+    getProduct(slug);
+  }, [slug, getProduct]);
+
+  if (isLoading) {
+    return (
+      <Container>
+        <h1>Loading...</h1>
+      </Container>
+    );
+  }
+
+  if (!product) {
+    return (
+      <Container>
+        <h1>{error}</h1>
+      </Container>
+    );
+  }
+
+  const addToCartHandler = () => {
+    addToCart({
+      productId: product.id,
+      color: colorRef.current!.value,
+      size: sizeRef.current!.value,
+      quantity: 1,
+    });
+  };
 
   return (
     <>
       <Container>
         <Main>
-          {/* <ImagesViewer images={[photo1, photo2, photo3, photo4, photo5]} /> */}
+          <ImagesViewer images={product.images} />
           <Details>
-            <h3>Lorem ipsum dolor sit.</h3>
-            <h4>{numberFormat(1555)}</h4>
+            <h3>{product.name}</h3>
+            <h4>{numberFormat(+product.price)}</h4>
 
             <Selectors>
-              <Select label="color" options={['one']} ref={colorRef} />
-              <Select label="size" options={['one', 'two']} ref={sizeRef} />
+              <Select label="color" options={product.colors} ref={colorRef} />
+              <Select label="size" options={product.sizes} ref={sizeRef} />
             </Selectors>
-            <Button.Border>add to cart</Button.Border>
-            <Button.Full>but it now</Button.Full>
+            <Button.Border onClick={addToCartHandler} disabled={cartLoading}>
+              {cartLoading ? 'Loading...' : 'add to cart'}
+            </Button.Border>
+            {/* <Button.Full>but it now</Button.Full> */}
           </Details>
         </Main>
         <Description>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa,
-            dolorum?
-          </p>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque,
-            sequi magni enim voluptates eaque quia dicta, possimus accusantium
-            inventore, pariatur laudantium mollitia facilis amet repudiandae non
-            ratione rerum culpa corporis.
-          </p>
+          <p>{product.description}</p>
         </Description>
       </Container>
-      <Recommendation label="Lorem ipsum dolor sit amet.">
+      {/* <Recommendation label="Lorem ipsum dolor sit amet.">
         {new Array(4).fill(0).map((_, i) => (
           <Card.Product
             key={i}
@@ -60,7 +89,7 @@ export const Product: FC<ProductProps> = (props) => {
             price={1555}
           />
         ))}
-      </Recommendation>
+      </Recommendation> */}
     </>
   );
 };

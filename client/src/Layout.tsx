@@ -11,6 +11,7 @@ export interface LayoutProps {}
 
 export const Layout: FC<LayoutProps> = (props) => {
   const { isAuthModalOpen } = useContext(AuthContext);
+
   return (
     <Container>
       {isAuthModalOpen ? <Auth /> : null}

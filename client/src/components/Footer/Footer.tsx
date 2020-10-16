@@ -6,10 +6,10 @@ export interface FooterProps {}
 
 export const Footer: FC<FooterProps> = (props) => {
   const links = [
-    { label: 'Search', url: '/' },
-    { label: 'Search', url: '/' },
-    { label: 'Search', url: '/' },
-    { label: 'Search', url: '/' },
+    { label: 'Lorem', url: '/' },
+    { label: 'Lorem', url: '/' },
+    { label: 'Lorem', url: '/' },
+    { label: 'Lorem', url: '/' },
   ];
 
   return (

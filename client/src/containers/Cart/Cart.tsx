@@ -1,15 +1,24 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { numberFormat } from '../../utils/numberFormat';
 import { Container, Products, Tabel, Footer, Actions } from './CartStyle';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-import photo from '../../assets/SGT-Beanie_Navy_01_2048x.jpg';
 import { AuthContext } from '../../context/Auth';
+import { CartContext } from '../../context/Cart';
+import { useHistory } from 'react-router-dom';
 
 export interface CartProps {}
 
 export const Cart: FC<CartProps> = (props) => {
   const { user, authLodaing } = useContext(AuthContext);
+  const { cart, getCart } = useContext(CartContext);
+  const { goBack, push } = useHistory();
+
+  useEffect(() => {
+    if (user) {
+      getCart();
+    }
+  }, [getCart, user]);
 
   if (!user) {
     return (
@@ -21,6 +30,8 @@ export const Cart: FC<CartProps> = (props) => {
     );
   }
 
+  const toCheckout = () => push('/checkout');
+
   return (
     <Container>
       <Products>
@@ -30,17 +41,8 @@ export const Cart: FC<CartProps> = (props) => {
           <span>Quantity</span>
           <span>Total</span>
         </Tabel>
-        {new Array(6).fill(0).map((_, i) => (
-          <Card.Cart
-            key={i}
-            color="black"
-            size="m"
-            maxQuantity={10}
-            name="lorem"
-            img={photo}
-            price={1555}
-            quantity={1}
-          />
+        {cart.items.map((item, i) => (
+          <Card.Cart key={item.id} index={i} {...item} />
         ))}
       </Products>
       <Footer>
@@ -51,12 +53,14 @@ export const Cart: FC<CartProps> = (props) => {
           <textarea></textarea>
         </div>
         <Actions>
-          <h3>Subtotal {numberFormat(1555)}</h3>
+          <h3>Subtotal {numberFormat(cart.total)}</h3>
           <span style={{ fontStyle: 'italic', textAlign: 'right' }}>
             Taxes and shipping calculated at checkout
           </span>
-          <Button.Border>Continue shopping</Button.Border>
-          <Button.Full>check out</Button.Full>
+          <Button.Border onClick={goBack}>Continue shopping</Button.Border>
+          <Button.Full disabled={cart.length < 1} onClick={toCheckout}>
+            check out
+          </Button.Full>
         </Actions>
       </Footer>
     </Container>

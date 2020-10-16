@@ -11,9 +11,9 @@ export const Tobbar: FC<TobbarProps> = (props) => {
   const { toggleAuthModal, user, authLodaing } = useContext(AuthContext);
 
   const auth = user ? (
-    <h3>{user.name}</h3>
+    <h4>{user.name}</h4>
   ) : authLodaing ? (
-    <h3>Loading...</h3>
+    <h4>Loading...</h4>
   ) : (
     <button onClick={toggleAuthModal}>
       <i style={{ marginRight: '0.5rem' }}>
@@ -23,7 +23,6 @@ export const Tobbar: FC<TobbarProps> = (props) => {
     </button>
   );
 
-  const items = 0;
   return (
     <Container>
       <Top>
@@ -32,7 +31,7 @@ export const Tobbar: FC<TobbarProps> = (props) => {
           <i>
             <RiShoppingCartLine />
           </i>
-          <span>Cart ({items})</span>
+          <span>Cart</span>
         </Link>
         {auth}
       </Top>

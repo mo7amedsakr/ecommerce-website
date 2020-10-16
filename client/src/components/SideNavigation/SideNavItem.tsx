@@ -11,7 +11,11 @@ export interface SideNavItemProps {
 export const SideNavItem: FC<SideNavItemProps> = (props) => {
   return (
     <LI>
-      <NavLink to={props.to} activeStyle={{ fontWeight: theme.fontWeight.mid }}>
+      <NavLink
+        to={props.to}
+        exact
+        activeStyle={{ fontWeight: theme.fontWeight.mid }}
+      >
         {props.label}
       </NavLink>
     </LI>

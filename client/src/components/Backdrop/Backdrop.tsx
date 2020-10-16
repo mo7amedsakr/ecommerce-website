@@ -11,7 +11,7 @@ const Div = styled.div`
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.colors.backdrop};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,7 +5,7 @@ language: node_js
 services:
   - docker
 
-after_success:
+script:
   # build
   - docker build -t mo7amedsakr/ecommerce-client ./client
   - docker build -t mo7amedsakr/ecommerce-nginx ./nginx

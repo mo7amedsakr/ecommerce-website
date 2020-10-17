@@ -1,3 +1,0 @@
-FROM mo7amedsakr/ecommerce-client
-FROM mo7amedsakr/ecommerce-server
-FROM mo7amedsakr/ecommerce-nginx

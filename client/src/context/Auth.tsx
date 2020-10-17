@@ -62,7 +62,7 @@ export const AuthProvider: FC = (props) => {
       setUser({ name, email });
       toggleAuthModal();
     } catch (error) {
-      setError(error.response.data.message);
+      setError(error?.response?.data?.message);
     } finally {
       setIsLoading(false);
     }

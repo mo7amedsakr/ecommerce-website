@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  nginx:
+    stdin_open: true
+    logging:
+      driver: none
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '80:80'
+
   client:
     stdin_open: true
     build:
@@ -11,10 +22,8 @@ services:
       - ./client:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
-    ports:
-      - '3000:3000'
-    ############################################
-  server:
+
+  api:
     stdin_open: true
     build:
       dockerfile: Dockerfile.dev
@@ -24,5 +33,3 @@ services:
       - ./server:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
-    ports:
-      - '4000:4000'

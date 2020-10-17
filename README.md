@@ -20,5 +20,5 @@ ___
 
 ___
 
-The ui design and the products data from [Shopify](https://themes.shopify.com/themes/simple/styles/light/preview
+The UI design and the products data from [Shopify](https://themes.shopify.com/themes/simple/styles/light/preview
 "Simple theme")

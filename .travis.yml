@@ -1,0 +1,16 @@
+sudo: required
+
+services:
+  - docker
+
+after_success:
+  # build
+  - docker build -t mo7amedsakr/ecommerce-client ./client
+  - docker build -t mo7amedsakr/ecommerce-nginx ./nginx
+  - docker build -t mo7amedsakr/ecommerce-server ./server
+  # login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push
+  - docker push mo7amedsakr/ecommerce-client
+  - docker push mo7amedsakr/ecommerce-nginx
+  - docker push mo7amedsakr/ecommerce-server

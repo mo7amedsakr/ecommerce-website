@@ -6,3 +6,6 @@ build:
 
 run:
   server: npm run start
+
+release:
+  image: nginx

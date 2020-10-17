@@ -16,6 +16,7 @@ ___
 * TypeScript
 * Docker
 * Nginx
+* TravisCi
 
 ___
 

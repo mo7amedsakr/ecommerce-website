@@ -8,4 +8,7 @@ run:
   server: npm run start
 
 release:
-  image: client server nginx
+  image:
+    - client
+    - server
+    - nginx

@@ -1,0 +1,8 @@
+build:
+  docker:
+    client: ./client/Dockerfile
+    server: ./server/Dockerfile
+    nginx: ./nginx/Dockerfile
+
+run:
+  server: npm run start

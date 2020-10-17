@@ -15,7 +15,7 @@ import app from './app';
 const main = async () => {
   const connection = await createConnection({
     type: 'postgres',
-    url: process.env.DATABASE,
+    url: process.env.DATABASE_URL,
     logging: process.env.NODE_ENV === 'development',
     entities: ['./dist/entity/*.js'],
     migrations: ['./dist/migration/*.js'],

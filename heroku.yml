@@ -4,4 +4,4 @@ build:
 
 run:
   worker:
-    imgae: worker
+    image: worker

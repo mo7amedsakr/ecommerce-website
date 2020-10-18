@@ -1,4 +1,6 @@
-Since i can't deploy this application for free there is no **demo** for preview.
+# Preview [https://e-commerce-full-stack.herokuapp.com/](https://e-commerce-full-stack.herokuapp.com/)
+
+I didn't deploy with docker because there is no free service.
 
 So if you have docker installed you can clone this repository and run
 

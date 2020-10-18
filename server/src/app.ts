@@ -22,7 +22,7 @@ app.use(cors());
 app.options('*', cors());
 
 // Serving static files
-// app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Set security HTTP headers
 app.use(helmet());

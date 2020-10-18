@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authController_1 = require("../controllers/authController");
+const cartController_1 = require("../controllers/cartController");
+const router = express_1.Router({ mergeParams: true });
+router.use(authController_1.protect);
+router.route('/').get(cartController_1.getCart).post(cartController_1.createCartItem).delete(cartController_1.deleteCart);
+router.route('/:id').delete(cartController_1.deleteCartItem).patch(cartController_1.updateCartItem);
+exports.default = router;

@@ -6,6 +6,6 @@ client/build
 **.env.d.ts
 
 **/dev-data
-**/dev.ts
+**/dev.*s
 
 **/ormconfig.json

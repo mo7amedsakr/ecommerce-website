@@ -61,12 +61,12 @@ app.use(compression());
 
 // Routes
 
-// app.all('*', (req, res, next) => {
-//   res.sendFile(`${__dirname}/build/index.html`);
-// });
-
 app.use('/api/v1/users/', usersRouter);
 app.use('/api/v1/products/', productsRouter);
+
+app.all('*', (req, res, next) => {
+  res.sendFile(`${__dirname}/build/index.html`);
+});
 
 app.use(globalErrorHandler);
 

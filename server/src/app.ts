@@ -65,7 +65,7 @@ app.use('/api/v1/users/', usersRouter);
 app.use('/api/v1/products/', productsRouter);
 
 app.all('*', (req, res, next) => {
-  res.sendFile(`${__dirname}/build/index.html`);
+  res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
 });
 
 app.use(globalErrorHandler);

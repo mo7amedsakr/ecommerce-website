@@ -1,4 +1,4 @@
-import path from 'path';
+import { join as pathJoin } from 'path';
 import express from 'express';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
@@ -22,7 +22,7 @@ app.use(cors());
 app.options('*', cors());
 
 // Serving static files
-app.use(express.static(path.join(__dirname, '../', 'build')));
+app.use(express.static(pathJoin(__dirname, '../', 'build')));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -65,7 +65,7 @@ app.use('/api/v1/users/', usersRouter);
 app.use('/api/v1/products/', productsRouter);
 
 app.all('*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
+  res.sendFile(pathJoin(__dirname, '../', 'build', 'index.html'));
 });
 
 app.use(globalErrorHandler);

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
+const path_1 = require("path");
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
@@ -22,7 +22,7 @@ app.enable('trust proxy');
 app.use(cors_1.default());
 app.options('*', cors_1.default());
 // Serving static files
-app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'build')));
+app.use(express_1.default.static(path_1.join(__dirname, '../', 'build')));
 // Set security HTTP headers
 app.use(helmet_1.default());
 // Development logging
@@ -54,7 +54,7 @@ app.use(compression_1.default());
 app.use('/api/v1/users/', usersRouter_1.default);
 app.use('/api/v1/products/', productsRouter_1.default);
 app.all('*', (req, res, next) => {
-    res.sendFile(path_1.default.join(__dirname, '../', 'build', 'index.html'));
+    res.sendFile(path_1.join(__dirname, '../', 'build', 'index.html'));
 });
 app.use(errorController_1.globalErrorHandler);
 exports.default = app;

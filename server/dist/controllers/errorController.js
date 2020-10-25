@@ -28,6 +28,7 @@ exports.globalErrorHandler = (err, req, res, next) => {
         sendErrorDev(err, req, res);
     }
     else if (process.env.NODE_ENV === 'production') {
+        sendErrorProd(err, req, res);
     }
     next();
 };

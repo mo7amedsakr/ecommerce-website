@@ -67,7 +67,7 @@ namespace API.Controllers
 			return new UserDto(user.UserName, user.Email);
 		}
 
-		[HttpGet("logout")]
+		[HttpPost("logout")]
 		public async Task Logout()
 		{
 			await _cookieService.SignOutAsync(HttpContext);

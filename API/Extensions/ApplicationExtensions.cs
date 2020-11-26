@@ -1,4 +1,6 @@
 ﻿using API.Data;
+using API.Interfaces;
+using API.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,8 @@ namespace API.Extensions
 	{
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
+			services.AddScoped<IUserRepository, UserRepository>();
+
 			services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 			services.AddDbContext<DataContext>(options =>

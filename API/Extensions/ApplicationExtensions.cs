@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Interfaces;
 using API.Repositories;
+using API.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +11,10 @@ namespace API.Extensions
 {
 	public static class ApplicationExtensions
 	{
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
-    {
+		public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
+		{
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<ICookieService, CookieService>();
 
 			services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
@@ -23,7 +25,7 @@ namespace API.Extensions
 			});
 
 			return services;
-    }
+		}
 
-  }
+	}
 }

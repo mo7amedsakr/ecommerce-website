@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Dtos;
+using API.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace API.Interfaces
 	public interface IUserRepository
 	{
 		Task<IEnumerable<User>> GetUsersAsync();
-		Task<User> GetUserByIdAsync(Guid id);
+		Task<UserDto> GetUserByIdAsync(Guid id);
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Dtos;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,10 @@ namespace API.Controllers
 			return Ok(await _userRepository.GetUsersAsync());
 		}
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<User>> GetUserById(Guid id)
+		[HttpGet("get-me")]
+		public async Task<ActionResult<UserDto>> GetMe()
 		{
-			return await _userRepository.GetUserByIdAsync(id);
+			return await _userRepository.GetUserByIdAsync(User.GetUserId());
 		}
 	}
 }

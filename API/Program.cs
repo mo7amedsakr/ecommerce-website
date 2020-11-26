@@ -21,10 +21,11 @@ namespace API
 			try
 			{
 				var context = services.GetRequiredService<DataContext>();
-				//var userManager = services.GetRequiredService<UserManager<User>>();
+				var userManager = services.GetRequiredService<UserManager<User>>();
 				var roleManager = services.GetRequiredService<RoleManager<Role>>();
 				await context.Database.MigrateAsync();
 				await Seed.SeedRoles(roleManager);
+				await Seed.AddAdminUser(userManager, roleManager);
 			}
 			catch (Exception ex)
 			{

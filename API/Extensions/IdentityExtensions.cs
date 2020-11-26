@@ -1,9 +1,13 @@
 ﻿using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -11,7 +15,7 @@ namespace API.Extensions
 {
 	public static class IdentityExtensions
 	{
-		public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
+		public static IServiceCollection AddIdentityServices(this IServiceCollection services)
 		{
 			services
 					.AddIdentityCore<User>(opt =>
@@ -24,16 +28,16 @@ namespace API.Extensions
 					.AddRoleValidator<RoleValidator<Role>>()
 					.AddEntityFrameworkStores<DataContext>();
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-			{
-				options.TokenValidationParameters = new TokenValidationParameters
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(
+				CookieAuthenticationDefaults.AuthenticationScheme,
+				opt =>
 				{
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
-					ValidateIssuer = false,
-					ValidateAudience = false
-				};
-			});
+					opt.Cookie.SameSite = SameSiteMode.None;
+					opt.Cookie.Name = "token";
+					opt.Cookie.HttpOnly = true;
+					opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				});
 
 			services.AddAuthorization(opt =>
 			{

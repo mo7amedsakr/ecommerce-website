@@ -2,10 +2,8 @@
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers

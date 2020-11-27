@@ -1,11 +1,12 @@
 ﻿using API.Dtos;
 using API.Entities;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -40,9 +41,13 @@ namespace API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+		public async Task<ActionResult<PagedList<ProductDto>>> GetProducts([FromQuery] ProductsParams productsParams)
 		{
-			return Ok(await _productRepository.GetProductsAsync());
+			var products = await _productRepository.GetProductsAsync(productsParams);
+
+			Response.AddPaginationHeader(products.CurrentPage, products.PageSize, products.TotalCount, products.TotalPages);
+
+			return products;
 		}
 
 		[HttpGet("{slug}")]

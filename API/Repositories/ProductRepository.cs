@@ -1,12 +1,12 @@
 ﻿using API.Data;
 using API.Dtos;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,9 +46,11 @@ namespace API.Repositories
 				.FirstOrDefaultAsync();
 		}
 
-		public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+		public async Task<PagedList<ProductDto>> GetProductsAsync(ProductsParams productsParams)
 		{
-			return await _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToListAsync();
+			var productsQuery = _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider);
+
+			return await PagedList<ProductDto>.CreateAsync(productsQuery, productsParams.PageNumber, productsParams.PageSize);
 		}
 
 		public async Task<bool> SaveAllAsync()

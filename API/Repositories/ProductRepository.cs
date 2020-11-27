@@ -50,10 +50,9 @@ namespace API.Repositories
 		{
 			var productsQuery = _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider);
 
-			if (!string.IsNullOrEmpty(productsParams.CollectionName))
-			{
-				productsQuery = productsQuery.Where(p => p.CollectionName == productsParams.CollectionName);
-			}
+			productsQuery =
+				string.IsNullOrEmpty(productsParams.CollectionName) ? productsQuery
+				: productsQuery.Where(p => p.CollectionName == productsParams.CollectionName);
 
 			productsQuery = productsParams.Price switch
 			{
@@ -61,6 +60,10 @@ namespace API.Repositories
 				"low" => productsQuery.OrderBy(p => (double)p.Price),
 				_ => productsQuery
 			};
+
+			productsQuery =
+				string.IsNullOrEmpty(productsParams.Search) ? productsQuery
+				: productsQuery.Where(p => EF.Functions.Like(p.Name, $"%{productsParams.Search}%"));
 
 			return await PagedList<ProductDto>.CreateAsync(productsQuery, productsParams.PageNumber, productsParams.PageSize);
 		}

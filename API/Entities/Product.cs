@@ -6,7 +6,7 @@ namespace API.Entities
 {
 	public class Product
 	{
-		public Guid Id { get; set; } = Guid.NewGuid();
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Slug { get; set; }
 		public decimal Price { get; set; }

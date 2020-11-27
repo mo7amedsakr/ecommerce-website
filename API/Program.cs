@@ -27,6 +27,7 @@ namespace API
 				await Seed.SeedRoles(roleManager);
 				await Seed.AddAdminUser(userManager, roleManager);
 				await Seed.SeedCollections(context);
+				await Seed.SeedProducts(context);
 			}
 			catch (Exception ex)
 			{

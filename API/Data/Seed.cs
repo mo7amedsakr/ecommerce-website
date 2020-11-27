@@ -28,5 +28,21 @@ namespace API.Data
 				await roleManager.CreateAsync(role);
 			}
 		}
+
+		public static async Task SeedCollections(DataContext context)
+		{
+			if (await context.Collections.AnyAsync()) return;
+
+			var collections = new List<Collection> {
+				new Collection { Name = "accessories" },
+				new Collection { Name = "footwear" },
+				new Collection { Name = "pants" },
+				new Collection { Name = "tshirts" }
+			};
+
+			await context.Collections.AddRangeAsync(collections);
+
+			await context.SaveChangesAsync();
+		}
 	}
 }

@@ -26,6 +26,7 @@ namespace API
 				await context.Database.MigrateAsync();
 				await Seed.SeedRoles(roleManager);
 				await Seed.AddAdminUser(userManager, roleManager);
+				await Seed.SeedCollections(context);
 			}
 			catch (Exception ex)
 			{

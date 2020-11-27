@@ -50,6 +50,18 @@ namespace API.Repositories
 		{
 			var productsQuery = _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider);
 
+			if (!string.IsNullOrEmpty(productsParams.CollectionName))
+			{
+				productsQuery = productsQuery.Where(p => p.CollectionName == productsParams.CollectionName);
+			}
+
+			productsQuery = productsParams.Price switch
+			{
+				"high" => productsQuery.OrderByDescending(p => (double)p.Price),
+				"low" => productsQuery.OrderBy(p => (double)p.Price),
+				_ => productsQuery
+			};
+
 			return await PagedList<ProductDto>.CreateAsync(productsQuery, productsParams.PageNumber, productsParams.PageSize);
 		}
 

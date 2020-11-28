@@ -33,7 +33,7 @@ namespace API.Repositories
 			_context.Products.Remove(product);
 		}
 
-		public async Task<Product> GetProductByIdAsync(Guid id)
+		public async Task<Product> GetProductByIdAsync(int id)
 		{
 			return await _context.Products.FindAsync(id);
 		}

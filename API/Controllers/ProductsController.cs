@@ -60,7 +60,7 @@ namespace API.Controllers
 
 		[HttpDelete("{id}")]
 		[Authorize(policy: "RequireAdminRole")]
-		public async Task<ActionResult> DeleteProduct(Guid id)
+		public async Task<ActionResult> DeleteProduct(int id)
 		{
 			var product = await _productRepository.GetProductByIdAsync(id);
 
@@ -73,7 +73,7 @@ namespace API.Controllers
 
 		[HttpPatch("{id}")]
 		[Authorize(policy: "RequireAdminRole")]
-		public async Task<ActionResult<Product>> UpdateProduct(Guid id, UpdateProductDto updateProductDto)
+		public async Task<ActionResult<Product>> UpdateProduct(int id, UpdateProductDto updateProductDto)
 		{
 			var product = await _productRepository.GetProductByIdAsync(id);
 

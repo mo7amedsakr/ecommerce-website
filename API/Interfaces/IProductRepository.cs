@@ -9,7 +9,7 @@ namespace API.Interfaces
 	public interface IProductRepository
 	{
 		void CreateProduct(Product product);
-		Task<Product> GetProductByIdAsync(Guid id);
+		Task<Product> GetProductByIdAsync(int id);
 		Task<ProductDto> GetProductBySlugAsync(string slug);
 		Task<PagedList<ProductDto>> GetProductsAsync(ProductsParams productsParams);
 		void DeleteProduct(Product product);

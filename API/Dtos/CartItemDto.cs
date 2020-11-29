@@ -1,12 +1,11 @@
-﻿namespace API.Entities.Base
+﻿namespace API.Dtos
 {
-	public abstract class ShoppingItem
+	public class CartItemDto
 	{
 		public int Id { get; set; }
-		public Product Product { get; set; }
-		public int ProductId { get; set; }
 		public int Quantity { get; set; }
 		public string Color { get; set; }
 		public string Size { get; set; }
+		public CartItemProductDto Product { get; set; }
 	}
 }

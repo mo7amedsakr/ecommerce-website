@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace API.Entities.Base
 {
-	public class Shopping<TItem> where TItem : ShoppingItem
+	public abstract class Shopping<TItem> where TItem : ShoppingItem
 	{
 		public int Id { get; set; }
 		public Guid UserId { get; set; }

@@ -16,6 +16,7 @@ namespace API.Extensions
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<ICollectionRepository, CollectionRepository>();
 			services.AddScoped<IProductRepository, ProductRepository>();
+			services.AddScoped<ICartRepository, CartRepository>();
 			services.AddScoped<ICookieService, CookieService>();
 
 			services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);

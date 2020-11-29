@@ -15,14 +15,16 @@ namespace API.Controllers
 		private readonly SignInManager<User> _signInManager;
 		private readonly IMapper _mapper;
 		private readonly ICookieService _cookieService;
+		private readonly ICartRepository _cartRepository;
 
-		public AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IMapper mapper, ICookieService cookieService)
+		public AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, SignInManager<User> signInManager, IMapper mapper, ICookieService cookieService, ICartRepository cartRepository)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_signInManager = signInManager;
 			_mapper = mapper;
 			_cookieService = cookieService;
+			_cartRepository = cartRepository;
 		}
 
 		[HttpPost("register")]
@@ -43,6 +45,12 @@ namespace API.Controllers
 			var roleResult = await _userManager.AddToRoleAsync(user, "User");
 
 			if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
+
+			_cartRepository.CreateCart(new Cart { UserId = user.Id });
+
+			var cartCreated = await _cartRepository.SaveAllAsync();
+
+			if (!cartCreated) return BadRequest("Error creating cart.");
 
 			await _cookieService.SignInAsync(user, HttpContext);
 

@@ -43,6 +43,10 @@ namespace API.Data
 			builder.Entity<Collection>()
 				.HasIndex(c => c.Name)
 				.IsUnique(true);
+
+			builder.Entity<CartItem>()
+				.HasIndex(ci => new { ci.CartId, ci.ProductId, ci.Color, ci.Size })
+				.IsUnique(true);
 		}
 	}
 }

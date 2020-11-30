@@ -2,9 +2,9 @@
 
 namespace API.Dtos
 {
-	public class CartDto
+	public class ShoppingDto
 	{
 		public decimal TotalPrice { get; set; }
-		public IEnumerable<CartItemDto> Items { get; set; }
+		public IEnumerable<ShoppingItemDto> Items { get; set; }
 	}
 }

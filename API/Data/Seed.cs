@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace API.Data
@@ -74,7 +75,7 @@ namespace API.Data
 				context.Products.Add(new Product
 				{
 					Name = product.Name,
-					Slug = product.Slug,
+					Slug = Regex.Replace(product.Slug, @"\/+", ""),
 					Price = product.Price,
 					Description = product.Description,
 					Images = product.Images,

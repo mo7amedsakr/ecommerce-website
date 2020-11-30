@@ -13,22 +13,24 @@ namespace API.Controllers
 	public class CartsController : BaseApiController
 	{
 		private readonly ICartRepository _cartRepository;
+		private readonly IProductRepository _productRepository;
 		private readonly IMapper _mapper;
 
-		public CartsController(ICartRepository cartRepository, IMapper mapper)
+		public CartsController(ICartRepository cartRepository, IProductRepository productRepository, IMapper mapper)
 		{
 			_cartRepository = cartRepository;
+			_productRepository = productRepository;
 			_mapper = mapper;
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<CartDto>> GetCart()
+		public async Task<ActionResult<ShoppingDto>> GetCart()
 		{
 			return await _cartRepository.GetUserCartAsync(User.GetUserId());
 		}
 
 		[HttpGet("add-to-cart")]
-		public async Task<ActionResult<CartDto>> AddToCart(AddCartItemDto itemDto)
+		public async Task<ActionResult<ShoppingDto>> AddToCart(AddCartItemDto itemDto)
 		{
 			var cart = await _cartRepository.GetCartAsync(User.GetUserId());
 
@@ -39,7 +41,7 @@ namespace API.Controllers
 				item = new CartItem
 				{
 					CartId = cart.Id,
-					ProductId = itemDto.ProductId,
+					Product = await _productRepository.GetProductByIdAsync(itemDto.ProductId),
 					Quantity = 1,
 					Color = itemDto.Color,
 					Size = itemDto.Size
@@ -52,9 +54,10 @@ namespace API.Controllers
 
 			cart.Items.Add(item);
 
-			_cartRepository.UpdateCart(cart);
+			_cartRepository.UpdateCartPrice(cart);
+			_cartRepository.Update(cart);
 
-			return (await _cartRepository.SaveAllAsync()) ? _mapper.Map<CartDto>(cart) : BadRequest();
+			return (await _cartRepository.SaveAllAsync()) ? _mapper.Map<ShoppingDto>(cart) : BadRequest();
 		}
 
 		[HttpDelete("item/{id}")]
@@ -79,7 +82,8 @@ namespace API.Controllers
 
 			cartItem.Quantity = itemDto.Quantity;
 
-			_cartRepository.UpdateCart(cart);
+			_cartRepository.UpdateCartPrice(cart);
+			_cartRepository.Update(cart);
 
 			return (await _cartRepository.SaveAllAsync()) ? NoContent() : BadRequest("Can not update cart item.");
 		}

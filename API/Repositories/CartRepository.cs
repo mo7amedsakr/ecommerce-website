@@ -32,6 +32,11 @@ namespace API.Repositories
 			cart.Items.Remove(cartItem);
 		}
 
+		public void DeleteCartItems(Cart cart)
+		{
+			_context.RemoveRange(cart.Items);
+		}
+
 		public async Task<Cart> GetCartAsync(Guid userId)
 		{
 			return await _context.Carts
@@ -55,10 +60,10 @@ namespace API.Repositories
 			return cart.Items.FirstOrDefault(i => i.Id == cartItemId);
 		}
 
-		public async Task<CartDto> GetUserCartAsync(Guid userId)
+		public async Task<ShoppingDto> GetUserCartAsync(Guid userId)
 		{
 			return await _context.Carts.Where(c => c.UserId == userId)
-				.ProjectTo<CartDto>(_mapper.ConfigurationProvider)
+				.ProjectTo<ShoppingDto>(_mapper.ConfigurationProvider)
 				.FirstOrDefaultAsync();
 		}
 
@@ -67,7 +72,13 @@ namespace API.Repositories
 			return await _context.SaveChangesAsync() > 0;
 		}
 
-		public void UpdateCart(Cart cart)
+		public void Update(Cart cart)
+		{
+			_context.Entry(cart).State = EntityState.Modified;
+
+		}
+
+		public void UpdateCartPrice(Cart cart)
 		{
 			cart.TotalPrice = 0;
 
@@ -75,8 +86,6 @@ namespace API.Repositories
 			{
 				cart.TotalPrice += item.Quantity * item.Product.Price;
 			}
-
-			_context.Entry(cart).State = EntityState.Modified;
 		}
 	}
 }

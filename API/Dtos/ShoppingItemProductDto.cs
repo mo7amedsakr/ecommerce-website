@@ -1,6 +1,6 @@
 ﻿namespace API.Dtos
 {
-	public class CartItemProductDto
+	public class ShoppingItemProductDto
 	{
 		public string Name { get; set; }
 		public string Slug { get; set; }

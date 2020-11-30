@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+client/node_modules
+client/build
 API/*.db
 API/appsettings.json
 API/**/launchSettings.json

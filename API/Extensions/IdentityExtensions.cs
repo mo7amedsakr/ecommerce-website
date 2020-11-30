@@ -30,7 +30,7 @@ namespace API.Extensions
 				opt.Cookie.SameSite = SameSiteMode.None;
 				opt.Cookie.Name = "token";
 				opt.Cookie.HttpOnly = true;
-				opt.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+				opt.ExpireTimeSpan = TimeSpan.FromDays(3);
 				opt.Events = new CookieAuthenticationEvents
 				{
 					OnRedirectToLogin = redirectContext =>
@@ -40,7 +40,6 @@ namespace API.Extensions
 					}
 				};
 			});
-
 
 			services.AddAuthorization(opt =>
 			{

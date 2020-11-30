@@ -62,11 +62,11 @@ namespace API.Controllers
 		{
 			var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-			if (user == null) return Unauthorized("Invalid username or password.");
+			if (user == null) return Unauthorized("Invalid email or password.");
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-			if (!result.Succeeded) return Unauthorized("Invalid username or password.");
+			if (!result.Succeeded) return Unauthorized("Invalid email or password.");
 
 			await _cookieService.SignInAsync(user, HttpContext);
 

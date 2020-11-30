@@ -29,7 +29,7 @@ namespace API.Controllers
 			return await _cartRepository.GetUserCartAsync(User.GetUserId());
 		}
 
-		[HttpGet("add-to-cart")]
+		[HttpPost("add-to-cart")]
 		public async Task<ActionResult<ShoppingDto>> AddToCart(AddCartItemDto itemDto)
 		{
 			var cart = await _cartRepository.GetCartAsync(User.GetUserId());

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Extensions
 {
@@ -23,15 +25,22 @@ namespace API.Extensions
 					.AddEntityFrameworkStores<DataContext>();
 
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(
-				CookieAuthenticationDefaults.AuthenticationScheme,
-				opt =>
+			.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opt =>
+			{
+				opt.Cookie.SameSite = SameSiteMode.None;
+				opt.Cookie.Name = "token";
+				opt.Cookie.HttpOnly = true;
+				opt.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+				opt.Events = new CookieAuthenticationEvents
 				{
-					opt.Cookie.SameSite = SameSiteMode.None;
-					opt.Cookie.Name = "token";
-					opt.Cookie.HttpOnly = true;
-					opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-				});
+					OnRedirectToLogin = redirectContext =>
+					{
+						redirectContext.HttpContext.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					}
+				};
+			});
+
 
 			services.AddAuthorization(opt =>
 			{

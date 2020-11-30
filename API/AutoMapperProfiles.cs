@@ -15,13 +15,16 @@ namespace API
 			CreateMap<Product, ProductDto>()
 				.ForMember(dest => dest.CollectionName, opt => opt.MapFrom(src => src.Collection.Name));
 			CreateMap<CreateProductDto, Product>()
-				.ForMember(dest => dest.Slug, opt => opt.MapFrom(src => Regex.Replace(src.Name, @"\s+", "").ToLower()));
+				.ForMember(dest => dest.Slug, opt => opt.MapFrom(src => Regex.Replace(src.Name, @"[\s\/]+", "-").ToLower()));
 			CreateMap<UpdateProductDto, Product>();
-			CreateMap<Product, CartItemProductDto>()
+			CreateMap<Product, ShoppingItemProductDto>()
 				.ForMember(dest => dest.Image, opt => opt.MapFrom(p => p.Images[0]));
 
-			CreateMap<Cart, CartDto>();
-			CreateMap<CartItem, CartItemDto>();
+			CreateMap<Cart, ShoppingDto>();
+			CreateMap<CartItem, ShoppingItemDto>();
+
+			CreateMap<Order, ShoppingDto>();
+			CreateMap<OrderItem, ShoppingItemDto>();
 		}
 	}
 }
